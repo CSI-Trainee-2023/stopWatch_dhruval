@@ -14,42 +14,50 @@ let milisec = 0;
 const toggle = () => {
     if(!isPlay){
         start.innerHTML = 'Stop';
-        const playMin = () => {
-            setInterval(() => {
-                minutes.innerHTML = min++
-            }, 60000)
-        }
-        
-        const playSec = () => {
-            setInterval(() => {
-                if(sec <= 60){
-                    second.innerHTML = sec++;
-                }else{
-                    sec = 0;
-                    playMin();
-                } 
-            }, 1000)
-        }
-        
-        const playmiliSec = () => {
-            setInterval(() => {
-                if(milisec <= 100){
-                    miliSec.innerHTML = milisec++;
-                }else{
-                    milisec = 0;
-                    playSec();
-                } 
-            },10)
-        }
+        playmiliSec();
         isPlay = true;
     }else{
         start.innerHTML = 'Start';
-        playmiliSec();
         isPlay = false  ;
     }
 }
 
+// const playMin = () => {
+//     setInterval(() => {
+//         minutes.innerHTML = min++
+//     }, 60*1000)
+// }
 
+// const playSec = () => {
+//     setInterval(() => {
+//         if(sec <= 60){
+//             second.innerHTML = sec++;
+//         }else{
+//             sec = 0;
+//             playMin();
+//         } 
+//     }, 1000)
+// }
+
+const playmiliSec = () => {
+    setInterval(() => {
+        if(milisec < 100){
+            miliSec.innerHTML = ++milisec;
+        }else{
+            milisec = 0;
+            if(sec < 60){
+                second.innerHTML = ++sec;
+            }else{
+                sec = 0;
+                if(min < 60){
+                    minutes.innerHTML = ++min;
+                }else{
+                    min = 0;
+                }
+            }    
+        } 
+    },10)
+}
 
 start.addEventListener("click", toggle);
 
