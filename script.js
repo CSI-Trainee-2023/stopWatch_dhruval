@@ -13,7 +13,7 @@ let milisec = 0;
 let interval;
 let lapCount = 0;
 
-// Function to retrieve lap data from local storage and populate lap list
+
 const loadLapsFromLocalStorage = () => {
     const storedLapData = localStorage.getItem('lapData');
     if (storedLapData) {
@@ -24,7 +24,7 @@ const loadLapsFromLocalStorage = () => {
     }
 };
 
-// Function to add a lap to the UI
+
 const addLapToUI = (lap) => {
     const li = document.createElement("li");
     const number = document.createElement("span");
@@ -41,7 +41,7 @@ const addLapToUI = (lap) => {
     lapList.append(li);
 };
 
-// Function to store lap data in local storage
+
 const storeLapInLocalStorage = (lap) => {
     const storedLapData = localStorage.getItem('lapData');
     let lapData = [];
@@ -95,7 +95,6 @@ document.addEventListener('keydown', function (event) {
 document.addEventListener('keydown', function (event) {
     if (event.key === 'c') {
         lapList.innerHTML = '';
-        // Clear lap data from local storage when clearing the list
         localStorage.removeItem('lapData');
     }
 });
@@ -105,15 +104,12 @@ const lap = () => {
         number: `#${++lapCount}`,
         timeStamp: `${min}:${sec}:${milisec}`,
     };
-    
-    // Add lap data to UI
+     
     addLapToUI(lapData);
-    
-    // Store lap data in local storage
+
     storeLapInLocalStorage(lapData);
 };
 
-// Load lap data from local storage when the page loads
 loadLapsFromLocalStorage();
 
 start.addEventListener("click", toggle);
