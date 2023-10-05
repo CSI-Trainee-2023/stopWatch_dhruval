@@ -13,104 +13,108 @@ let milisec = 0;
 let interval;
 let lapCount = 0;
 
-
 const loadLapsFromLocalStorage = () => {
-    const storedLapData = localStorage.getItem('lapData');
-    if (storedLapData) {
-        const lapData = JSON.parse(storedLapData);
-        lapData.forEach((lap) => {
-            addLapToUI(lap);
-        });
-    }
+  const storedLapData = localStorage.getItem("lapData");
+  if (storedLapData) {
+    const lapData = JSON.parse(storedLapData);
+    lapData.forEach((lap) => {
+      addLapToUI(lap);
+    });
+  }
 };
-
 
 const addLapToUI = (lap) => {
-    const li = document.createElement("li");
-    const number = document.createElement("span");
-    const timeStamp = document.createElement("span");
+  const li = document.createElement("li");
+  const number = document.createElement("span");
+  const timeStamp = document.createElement("span");
 
-    li.setAttribute("class", "lap");
-    number.setAttribute("class", "lapCount");
-    timeStamp.setAttribute("class", "lapTime");
+  li.setAttribute("class", "lap");
+  number.setAttribute("class", "lapCount");
+  timeStamp.setAttribute("class", "lapTime");
 
-    number.innerHTML = lap.number;
-    timeStamp.innerHTML = lap.timeStamp;
+  number.innerHTML = lap.number;
+  timeStamp.innerHTML = lap.timeStamp;
 
-    li.append(number, timeStamp);
-    lapList.append(li);
+  li.append(number, timeStamp);
+  lapList.append(li);
 };
 
-
 const storeLapInLocalStorage = (lap) => {
-    const storedLapData = localStorage.getItem('lapData');
-    let lapData = [];
-    if (storedLapData) {
-        lapData = JSON.parse(storedLapData);
-    }
-    lapData.push(lap);
-    localStorage.setItem('lapData', JSON.stringify(lapData));
+  const storedLapData = localStorage.getItem("lapData");
+  let lapData = [];
+  if (storedLapData) {
+    lapData = JSON.parse(storedLapData);
+  }
+  lapData.push(lap);
+  localStorage.setItem("lapData", JSON.stringify(lapData));
 };
 
 const toggle = () => {
-    if (!isPlay) {
-        start.innerHTML = 'Stop';
-        interval = playmiliSec();
-        isPlay = true;
-    } else {
-        start.innerHTML = 'Start';
-        clearInterval(interval);
-        isPlay = false;
-    }
+  if (!isPlay) {
+    start.innerHTML = "Stop";
+    interval = playmiliSec();
+
+    lapbtn.innerHTML = "Lap";
+    isPlay = true;
+  } else {
+    start.innerHTML = "Start";
+    clearInterval(interval);
+    lapbtn.innerHTML = "Reset";
+    isPlay = false;
+  }
 };
 
 const playmiliSec = () => {
-    return setInterval(() => {
-        if (milisec < 100) {
-            miliSec.innerHTML = ++milisec;
+  return setInterval(() => {
+    if (milisec < 100) {
+      miliSec.innerHTML = ++milisec;
+    } else {
+      milisec = 0;
+      if (sec < 60) {
+        second.innerHTML = ++sec;
+      } else {
+        sec = 0;
+        if (min < 60) {
+          minutes.innerHTML = ++min;
         } else {
-            milisec = 0;
-            if (sec < 60) {
-                second.innerHTML = ++sec;
-            } else {
-                sec = 0;
-                if (min < 60) {
-                    minutes.innerHTML = ++min;
-                } else {
-                    min = 0;
-                }
-            }
+          min = 0;
         }
-    }, 10);
+      }
+    }
+  }, 10);
 };
 
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'R') {
-        minutes.innerHTML = '00';
-        second.innerHTML = '00';
-        miliSec.innerHTML = '00';
-    }
-});
 
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'c') {
-        lapList.innerHTML = '';
-        localStorage.removeItem('lapData');
+  const reset = () => {
+    if(!isPlay){
+    minutes.innerHTML = "00";
+    second.innerHTML = "00";
+    miliSec.innerHTML = "00";
     }
+  };
+
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "c") {
+    lapList.innerHTML = "";
+    localStorage.removeItem("lapData");
+  }
 });
 
 const lap = () => {
+  if (isPlay) {
     const lapData = {
-        number: `#${++lapCount}`,
-        timeStamp: `${min}:${sec}:${milisec}`,
+      number: `#${++lapCount}`,
+      timeStamp: `${min}:${sec}:${milisec}`,
     };
-     
-    addLapToUI(lapData);
 
+    addLapToUI(lapData);
     storeLapInLocalStorage(lapData);
+  }
 };
 
 loadLapsFromLocalStorage();
 
 start.addEventListener("click", toggle);
 lapbtn.addEventListener("click", lap);
+lapbtn.addEventListener("click", reset);
