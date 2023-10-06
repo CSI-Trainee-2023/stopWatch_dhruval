@@ -87,6 +87,9 @@ const playmiliSec = () => {
 
   const reset = () => {
     if(!isPlay){
+        min = 0;
+        sec = 0;
+        milisec = 0;
     minutes.innerHTML = "00";
     second.innerHTML = "00";
     miliSec.innerHTML = "00";
