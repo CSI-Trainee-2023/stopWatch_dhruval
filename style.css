@@ -100,9 +100,9 @@ section{
     position: relative;
 }
 
-.lapList::-webkit-scrollbar{
+/* .lapList::-webkit-scrollbar{
     display: none;
-}
+} */
 
 .lap{
     width: 80%;
